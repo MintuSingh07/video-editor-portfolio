@@ -55,7 +55,7 @@ function ProjectCard({ project, index, onClick }: { project: typeof projects[0];
           <video 
             ref={videoRef}
             src={`${project.videoUrl}#t=2`}
-            className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 min-h-[300px] md:min-h-[400px]"
+            className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-700 min-h-[250px] md:min-h-[280px]"
             muted
             loop
             playsInline
@@ -163,7 +163,7 @@ export function Portfolio() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-start">
           {projects.map((project, index) => (
             <ProjectCard 
               key={project.title} 
