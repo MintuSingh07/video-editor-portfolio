@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// import VisualEditsMessenger from "../visual-edits/VisualEditsMessenger";
+import ErrorReporter from "@/components/ErrorReport";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -22,12 +14,40 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Polyfill for Node.js 22/25 experimental localStorage which might be incomplete
+  if (typeof global !== 'undefined' && (global as any).localStorage && typeof (global as any).localStorage.getItem !== 'function') {
+    (global as any).localStorage = {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+      key: () => null,
+      length: 0,
+    };
+  }
+
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
+        <Script
+          id="orchids-browser-logs"
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts/orchids-browser-logs.js"
+          strategy="afterInteractive"
+          data-orchids-project-id="f93785ed-946c-4997-ab42-8abcd2305bb4"
+        />
+        <ErrorReporter />
+        <Script
+          src="https://slelguoygbfzlpylpxfs.supabase.co/storage/v1/object/public/scripts//route-messenger.js"
+          strategy="afterInteractive"
+          data-target-origin="*"
+          data-message-type="ROUTE_CHANGE"
+          data-include-search-params="true"
+          data-only-in-iframe="true"
+          data-debug="true"
+          data-custom-data='{"appName": "YourApp", "version": "1.0.0", "greeting": "hi"}'
+        />
         {children}
+        {/* <VisualEditsMessenger /> */}
       </body>
     </html>
   );
